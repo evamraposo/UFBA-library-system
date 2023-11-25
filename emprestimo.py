@@ -26,6 +26,8 @@ class Emprestimo:
 
     def verificar_atraso(self):
         if datetime.now() > self.data_devolucao:
-            return f"Atrasado! Devolução prevista para {self.data_devolucao}"
+            print(f"Devolução pendente, em atraso desde o dia {self.data_devolucao}")
+            return True
         else:
+            
             return "Em dia"

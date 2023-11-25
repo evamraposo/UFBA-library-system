@@ -27,10 +27,23 @@ def main():
                 usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
                 livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
                 if usuario and livro:
-                    mensagem = biblioteca.emprestar_livro(usuario, livro)
-                    print(mensagem)
+
+                    #Verifica se o usuario está devendo algum livro
+                    devedor = next((u for u in usuario.emprestimos if u.verificar_atraso() == True), None)
+
+                    if devedor:
+                        print("O empréstimo não será possível até que o livro em atraso seja devolvido")
+                    
+                    elif usuario.qtd_emprestimos == 0:
+                        print("Usuário atingiu a quantidade máxima de empréstimos")
+                        
+                    else:
+                        mensagem = biblioteca.emprestar_livro(usuario, livro)
+                        print(mensagem)
                 else:
                     print("Usuário ou livro não encontrado.")
+                    
+
             elif acao == "dev":
                 # Lógica para devolução de livro
                 codigo_emprestimo = int(input("Digite o código do empréstimo: "))
@@ -40,10 +53,13 @@ def main():
                     print(mensagem)
                 else:
                     print("Empréstimo não encontrado.")
+
+
             elif acao == "res":
                 # Lógica para reserva de livro
                 usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
                 livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
+    
                 if usuario and livro:
                     mensagem = biblioteca.reservar_livro(usuario, livro)
                     print(mensagem)
