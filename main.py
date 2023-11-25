@@ -13,43 +13,46 @@ def main():
         biblioteca.adicionar_livro(livro)
 
     while True:
-        print("\n\nBem-vindo ao Sistema de Gerenciamento de Biblioteca\n-Instruções: [1] Emprestar Livro, [2] Devolver Livro, [3] Reservar Livro, [4] Sair")
-        opcao = input("-Escolha uma opção: ")
-        if opcao == "4":
+        print("\n\nBem-vindo ao Sistema de Gerenciamento de Biblioteca\n-Instruções: Para empréstimo digite emp, para devolução digite dev, para reservar digite res, seguido de um espaço digite seu código de usuário e o código do livro, se desejar encerrar o Sistema digiter sair:")
+
+        opcao = input("Qual ação deseja realizar? ")
+
+        if opcao != 'sair':
+            acao = opcao[:3]
+            codigo_usuario = int(opcao[4])
+            codigo_livro = int(opcao[6])
+            
+            if acao == "emp":
+                # Lógica para empréstimo de livro
+                usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
+                livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
+                if usuario and livro:
+                    mensagem = biblioteca.emprestar_livro(usuario, livro)
+                    print(mensagem)
+                else:
+                    print("Usuário ou livro não encontrado.")
+            elif acao == "dev":
+                # Lógica para devolução de livro
+                codigo_emprestimo = int(input("Digite o código do empréstimo: "))
+                emprestimo = next((e for e in biblioteca.emprestimos if e.id == codigo_emprestimo), None)
+                if emprestimo:
+                    mensagem = biblioteca.devolver_livro(emprestimo)
+                    print(mensagem)
+                else:
+                    print("Empréstimo não encontrado.")
+            elif acao == "res":
+                # Lógica para reserva de livro
+                usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
+                livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
+                if usuario and livro:
+                    mensagem = biblioteca.reservar_livro(usuario, livro)
+                    print(mensagem)
+                else:
+                    print("Usuário ou livro não encontrado.")
+
+        else:
             print("Saindo do sistema...")
             break
-        elif opcao == "1":
-            # Lógica para empréstimo de livro
-            codigo_usuario = int(input("Digite o código do usuário: "))
-            codigo_livro = int(input("Digite o código do livro: "))
-            usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-            livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
-            if usuario and livro:
-                mensagem = biblioteca.emprestar_livro(usuario, livro)
-                print(mensagem)
-            else:
-                print("Usuário ou livro não encontrado.")
-        elif opcao == "2":
-            # Lógica para devolução de livro
-            codigo_emprestimo = int(input("Digite o código do empréstimo: "))
-            emprestimo = next((e for e in biblioteca.emprestimos if e.id == codigo_emprestimo), None)
-            if emprestimo:
-                mensagem = biblioteca.devolver_livro(emprestimo)
-                print(mensagem)
-            else:
-                print("Empréstimo não encontrado.")
-        elif opcao == "3":
-            # Lógica para reserva de livro
-            codigo_usuario = int(input("Digite o código do usuário: "))
-            codigo_livro = int(input("Digite o código do livro: "))
-            usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-            livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
-            if usuario and livro:
-                mensagem = biblioteca.reservar_livro(usuario, livro)
-                print(mensagem)
-            else:
-                print("Usuário ou livro não encontrado.")
-
 
         
 
