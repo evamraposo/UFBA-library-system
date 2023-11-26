@@ -20,32 +20,44 @@ class Biblioteca:
 
 
 
-    def emprestar_livro(self, usuario, livro):
-        # Verificar se o livro está reservado por outro usuário
-        reserva = next((r for r in self.reservas if r.livro == livro and r.usuario != usuario), None)
-        if reserva:
-            return f"O livro '{livro.titulo}' está reservado por outro usuário."
+    def emprestar_livro(self, usuario, livro, professor):
 
-        # Processa o empréstimo
-        emprestimo = Emprestimo(usuario, livro)
-        self.emprestimos.append(emprestimo)
-        usuario.emprestimos.append(emprestimo)
-        usuario.qtd_emprestimos -= 1
-        #Verifica se há reserva em nome do usuário e remove se houver
-        reserva = next((r for r in self.reservas if r.livro == livro and r.usuario == usuario), None)
-        if reserva:
-            self.reservas.remove(reserva)
-            print('reserva removida')
+        #Verifica se o livro atingiu o máximo de exemplares emprestados
+        if livro.exemplares > 0:
 
-        return f"Emprestimo registrado para {usuario.nome}, Livro: {livro.titulo}, Devolução: {emprestimo.data_devolucao}. Código do empréstimo: {emprestimo.id}"
+            #Verifica se há reserva em nome do usuário
+            reserva = next((r for r in self.reservas if r.livro == livro and r.usuario == usuario), None)
+            if reserva:
+                self.reservas.remove(reserva)
+                livro.reservas += 1
 
+            #Verifica se o livro já atingiu o máximo de exemplares reservados
+            elif professor == 0:
+                
+                if livro.reservas <= 0 or livro.reservas == livro.exemplares: 
+                    return f"O livro '{livro.titulo}' está reservado por outro usuário."
+                else:
+                    usuario.qtd_emprestimos -= 1
 
+            # Processa o empréstimo
+            emprestimo = Emprestimo(usuario, livro)
+            self.emprestimos.append(emprestimo)
+            usuario.emprestimos.append(emprestimo)
+            livro.exemplares -= 1
 
-    def devolver_livro(self, emprestimo):
+            return f"Emprestimo registrado para {usuario.nome}, Livro: {livro.titulo}, Devolução: {emprestimo.data_devolucao}. Código do empréstimo: {emprestimo.id}"
+        
+        else:
+            return f"O livro '{livro.titulo}' já atingiu o limite de empréstimos."
+
+    def devolver_livro(self, emprestimo, professor):
         # Verifique se o empréstimo está na lista de empréstimos ativos
         if emprestimo in self.emprestimos:
             # Processa a devolução
-            emprestimo.usuario.qtd_emprestimos += 1
+            if professor == 0:
+                emprestimo.usuario.qtd_emprestimos += 1
+
+            emprestimo.livro.exemplares += 1
             self.emprestimos.remove(emprestimo)
 
             return f"Livro '{emprestimo.livro.titulo}' devolvido com sucesso."
@@ -53,15 +65,19 @@ class Biblioteca:
             return "Empréstimo não encontrado."
 
     def reservar_livro(self, usuario, livro):
-        # Verifica se o livro já está reservado ou emprestado
-        if any(r.livro == livro for r in self.reservas) or \
-           any(e.livro == livro for e in self.emprestimos):
+        if livro.exemplares == 0:
             return f"O livro '{livro.titulo}' já está reservado ou emprestado."
-
+        
+        elif livro.exemplares == 1 and livro.exemplares == livro.reservas:
+            return f"O livro '{livro.titulo}' já está reservado ou emprestado."
+        
+        elif livro.reservas <= 0:
+            return f"O livro '{livro.titulo}' já atingiu o limite de reservas."
+        
         # Cria uma nova reserva
         nova_reserva = Reserva(usuario, livro)
         self.reservas.append(nova_reserva)
+        livro.reservas -= 1
         return f"Reserva realizada para o livro '{livro.titulo}' pelo usuário {usuario.nome}."
 
     
-

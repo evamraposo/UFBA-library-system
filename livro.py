@@ -7,6 +7,7 @@ class Livro:
         self.edicao = edicao
         self.ano_publicacao = ano_publicacao
         self.exemplares = exemplares
+        self.reservas = self.exemplares
 
     def exibir_informacoes(self):
         info = f"Titulo: {self.titulo}, Editora: {self.editora}, Autores: {', '.join(self.autores)}, "

@@ -1,6 +1,7 @@
 from biblioteca import Biblioteca
 import dados_usuarios
 import dados_livros
+from usuario import Professor
 
 def main():
     biblioteca = Biblioteca()
@@ -26,6 +27,7 @@ def main():
                 # Lógica para empréstimo de livro
                 usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
                 livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
+                professor = 0
                 if usuario and livro:
 
                     #Verifica se o usuario está devendo algum livro
@@ -33,12 +35,17 @@ def main():
 
                     if devedor:
                         print("O empréstimo não será possível até que o livro em atraso seja devolvido")
-                    
+
+                    elif isinstance(usuario, Professor):
+
+                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor=1)
+                        print(mensagem)
+
                     elif usuario.qtd_emprestimos == 0:
                         print("Usuário atingiu a quantidade máxima de empréstimos")
                         
                     else:
-                        mensagem = biblioteca.emprestar_livro(usuario, livro)
+                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor)
                         print(mensagem)
                 else:
                     print("Usuário ou livro não encontrado.")
@@ -47,10 +54,23 @@ def main():
             elif acao == "dev":
                 # Lógica para devolução de livro
                 codigo_emprestimo = int(input("Digite o código do empréstimo: "))
+                
                 emprestimo = next((e for e in biblioteca.emprestimos if e.id == codigo_emprestimo), None)
+
                 if emprestimo:
-                    mensagem = biblioteca.devolver_livro(emprestimo)
-                    print(mensagem)
+                    usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
+                    
+                    professor = 0
+
+                    if isinstance(usuario, Professor):
+
+                        mensagem = biblioteca.devolver_livro(emprestimo, professor=1)
+                        print(mensagem)
+
+                    else:
+                        mensagem = biblioteca.devolver_livro(emprestimo, professor)
+                        print(mensagem)
+
                 else:
                     print("Empréstimo não encontrado.")
 
