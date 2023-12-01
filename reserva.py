@@ -8,3 +8,5 @@ class Reserva:
 
     def cancelar_reserva(self):
         return f"Reserva cancelada para {self.usuario.nome}, Livro: {self.livro.titulo}"
+    
+    

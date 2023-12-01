@@ -2,10 +2,17 @@ from biblioteca import Biblioteca
 import dados_usuarios
 import dados_livros
 from usuario import Professor
+from emprestimoAluno import EmprestimoAluno
+from emprestimoLivro import EmprestarLivro
+from reservarLivro import ReservarLivro
+from devolverLivro import DevolverLivro
 
 def main():
     biblioteca = Biblioteca()
-    
+    emprestimo_aluno = EmprestimoAluno()
+    emprestar = EmprestarLivro()
+    reserva = ReservarLivro()
+    devolver = DevolverLivro()
 
     # Carregar dados pré-definidos
     for usuario in dados_usuarios.usuarios:
@@ -31,22 +38,17 @@ def main():
                 if usuario and livro:
 
                     #Verifica se o usuario está devendo algum livro
-                    devedor = next((u for u in usuario.emprestimos if u.verificar_atraso() == True), None)
 
-                    if devedor:
-                        print("O empréstimo não será possível até que o livro em atraso seja devolvido")
-
-                    elif isinstance(usuario, Professor):
-
-                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor=1)
+                    if isinstance(usuario, Professor):
+                        biblioteca.verificar_reserva(usuario, livro)
+                        mensagem = emprestar.emprestar_livro(usuario, livro)
                         print(mensagem)
-
-                    elif usuario.qtd_emprestimos == 0:
-                        print("Usuário atingiu a quantidade máxima de empréstimos")
-                        
+                         
                     else:
-                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor)
+                        mensagem = emprestimo_aluno.emprestimo_aluno(usuario, livro)
+
                         print(mensagem)
+
                 else:
                     print("Usuário ou livro não encontrado.")
                     
@@ -54,21 +56,19 @@ def main():
             elif acao == "dev":
                 # Lógica para devolução de livro
                 codigo_emprestimo = int(input("Digite o código do empréstimo: "))
-                
-                emprestimo = next((e for e in biblioteca.emprestimos if e.id == codigo_emprestimo), None)
+                usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
+                emprestimo = next((e for e in usuario.emprestimos if e.id == codigo_emprestimo), None)
 
                 if emprestimo:
-                    usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-                    
-                    professor = 0
 
                     if isinstance(usuario, Professor):
 
-                        mensagem = biblioteca.devolver_livro(emprestimo, professor=1)
+                        mensagem = devolver.devolver_livro(emprestimo, usuario)
                         print(mensagem)
 
                     else:
-                        mensagem = biblioteca.devolver_livro(emprestimo, professor)
+                        mensagem = devolver.devolver_livro(emprestimo, usuario)
+                        emprestimo.usuario.qtd_emprestimos += 1
                         print(mensagem)
 
                 else:
@@ -81,7 +81,7 @@ def main():
                 livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
     
                 if usuario and livro:
-                    mensagem = biblioteca.reservar_livro(usuario, livro)
+                    mensagem = reserva.reservar_livro(usuario, livro)
                     print(mensagem)
                 else:
                     print("Usuário ou livro não encontrado.")

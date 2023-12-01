@@ -3,6 +3,7 @@ class Usuario:
         self.codigo = codigo
         self.nome = nome
         self.emprestimos = []
+        self.reservas = []
 
 class AlunoGraduacao(Usuario):
     def __init__(self, codigo, nome):
