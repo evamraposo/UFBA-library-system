@@ -14,5 +14,5 @@ class EmprestimoAluno(EmprestarLivro):
             verifica.limite_exemplares_reservados(livro)
         
         usuario.qtd_emprestimos -= 1
-        return super().emprestar_livro(usuario, livro)
+        return super().emprestimo_livro(usuario, livro)
         

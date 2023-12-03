@@ -1,5 +1,7 @@
 # dados_usuarios.py
-from usuario import AlunoGraduacao, AlunoPosGraduacao, Professor
+from alunoGraduacao import AlunoGraduacao
+from alunoPos import AlunoPosGraduacao
+from professor import Professor
 
 usuarios = [
     AlunoGraduacao(1, "João Silva"),

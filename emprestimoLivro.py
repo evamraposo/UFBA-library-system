@@ -2,7 +2,7 @@ from emprestimo import Emprestimo
 
 class EmprestarLivro:
 
-    def emprestar_livro(self, usuario, livro):
+    def emprestimo_livro(self, usuario, livro):
             
             devedor = next((u for u in usuario.emprestimos if u.verificar_atraso() == True), None)
 

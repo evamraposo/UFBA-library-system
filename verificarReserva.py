@@ -6,6 +6,7 @@ class VerificarReserva:
         if reserva:
             usuario.reservas.remove(reserva)
             livro.reservas += 1
+            usuario.qtd_reservas += 1
             return True
         return False
     
