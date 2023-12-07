@@ -16,7 +16,7 @@ def main():
 
         opcao = input("Qual ação deseja realizar? ")
 
-        if opcao != 'sair':
+        if opcao != 'sai':
             acao = opcao[:3]
             codigo_usuario = int(opcao[4])
             codigo_livro = int(opcao[6])
