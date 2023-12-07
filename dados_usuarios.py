@@ -4,8 +4,9 @@ from alunoPos import AlunoPosGraduacao
 from professor import Professor
 
 usuarios = [
-    AlunoGraduacao(1, "João Silva"),
-    AlunoPosGraduacao(2, "Maria Santos"),
-    Professor(3, "Dr. Carlos Pereira"),
-    AlunoGraduacao(4, "Pedro Paulo")
+    AlunoGraduacao(123, "João da Silva"),
+    AlunoPosGraduacao(456, "Luiz Fernando Rodrigues"),
+    AlunoGraduacao(789, "Pedro Paulo"),
+    Professor(100, "Carlos Lucena"),
+    
 ]

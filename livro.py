@@ -24,6 +24,6 @@ class Livro:
         if self.observadores:
             for observador in self.observadores:
                 notificacao = f"O livro {self.titulo} já possui duas ou mais reservas."
-                # print(notificacao)
+                print(notificacao)
                 observador.notificacoes.append(notificacao)
         

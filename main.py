@@ -16,11 +16,12 @@ def main():
 
         opcao = input("Qual ação deseja realizar? ")
 
-        if opcao != 'sair':
+        if opcao != 'sai':
             acao = opcao[:3]
-            codigo_usuario = int(opcao[4])
-            codigo_livro = int(opcao[6])
-            
+            codigo_usuario = int(opcao[4:7])
+            codigo_livro = int(opcao[8:11])
+            # print(codigo_usuario, codigo_livro)
+
             if acao == "emp":
                 
                 biblioteca.emprestar_livro(codigo_usuario, codigo_livro)
