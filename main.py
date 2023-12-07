@@ -35,7 +35,8 @@ def main():
                 biblioteca.reservar_livro(codigo_usuario, codigo_livro)
             
             elif acao == "obs":
-                pass
+
+                biblioteca.observar(codigo_usuario, codigo_livro)
 
         else:
             print("Saindo do sistema...")

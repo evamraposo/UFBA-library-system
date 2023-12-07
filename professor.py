@@ -7,7 +7,9 @@ class Professor(Usuario):
     def __init__(self, codigo, nome):
         super().__init__(codigo, nome)
         self.data_devolucao = 7
-
+        self.notificacoes = []
+        self.qtd_notificacoes = len(self.notificacoes)
+        
     def exibir_informacoes(self):
         return f"Professor: {self.nome}, Código: {self.codigo}"
     

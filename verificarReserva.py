@@ -12,11 +12,11 @@ class VerificarReserva:
     
     def limite_exemplares_reservados(self, livro):
 
-        if livro.exemplares == 0:
+        if livro.exemplares_disponiveis == 0:
             return True
         
-        elif livro.exemplares == 1 and livro.exemplares == livro.reservas:
+        elif livro.exemplares_disponiveis == 1 and livro.exemplares_disponiveis == livro.reservas:
             return True
         
-        elif livro.reservas <= 0:
+        elif livro.exemplares_disponiveis <= 0:
             return True

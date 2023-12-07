@@ -1,11 +1,11 @@
 from observador import Observador
-
+from reservarLivro import ReservarLivro
 class Biblioteca:
     def __init__(self):
         self.livros = []
         self.usuarios = []
         self.observador = Observador()
-  
+        self.reserva = ReservarLivro()
 
 
     def adicionar_livro(self, livro):
@@ -50,3 +50,12 @@ class Biblioteca:
             print(mensagem)
         else:
             print("Usuário ou livro não encontrado.")
+
+    
+    def observar(self, codigo_usuario, codigo_livro):
+        usuario = next((u for u in self.usuarios if u.codigo == codigo_usuario), None)
+        livro = next((l for l in self.livros if l.codigo == codigo_livro), None)
+
+        if usuario and livro:
+            mensagem = livro.registrar_observador(usuario)
+            print(mensagem)

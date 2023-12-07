@@ -9,11 +9,11 @@ class EmprestarLivro:
             if devedor:
                 return "O empréstimo não será possível até que o livro em atraso seja devolvido"
 
-            elif livro.exemplares > 0:
+            elif livro.exemplares_disponiveis > 0:
             # Processa o empréstimo
                 emprestimo = Emprestimo(usuario, livro)
                 usuario.emprestimos.append(emprestimo)
-                livro.exemplares -= 1
+                livro.exemplares_disponiveis -= 1
 
                 return f"Emprestimo registrado para {usuario.nome}, Livro: {livro.titulo}, Devolução: {emprestimo.data_devolucao}. Código do empréstimo: {emprestimo.id}"
             

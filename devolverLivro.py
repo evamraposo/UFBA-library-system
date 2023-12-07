@@ -6,7 +6,7 @@ class DevolverLivro:
         if emprestimo in usuario.emprestimos:
             # Processa a devolução
 
-            emprestimo.livro.exemplares += 1
+            emprestimo.livro.exemplares_disponiveis += 1
             usuario.emprestimos.remove(emprestimo)
             
             return f"Livro '{emprestimo.livro.titulo}' devolvido com sucesso."
