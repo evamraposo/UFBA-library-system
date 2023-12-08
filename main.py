@@ -1,11 +1,11 @@
+
+
 from biblioteca import Biblioteca
 import dados_usuarios
 import dados_livros
-from usuario import Professor
 
 def main():
     biblioteca = Biblioteca()
-    
 
     # Carregar dados pré-definidos
     for usuario in dados_usuarios.usuarios:
@@ -14,83 +14,52 @@ def main():
         biblioteca.adicionar_livro(livro)
 
     while True:
-        print("\n\nBem-vindo ao Sistema de Gerenciamento de Biblioteca\n-Instruções: Para empréstimo digite emp, para devolução digite dev, para reservar digite res, seguido de um espaço digite seu código de usuário e o código do livro, se desejar encerrar o Sistema digiter sair:")
+        print("\n\nBem-vindo ao Sistema de Gerenciamento de Biblioteca")
+        print("- Instruções: \n - Para empréstimo digite 'emp', seguido do código de usuário e do livro.")
+        print(" - Para devolução digite 'dev', seguido do código do empréstimo e do usuário.")
+        print(" - Para reserva digite 'res', seguido do código de usuário e do livro.")
+        print(" - Para observar digite 'obs', seguido do código de usuário e do livro.")
+        print(" - Para informações de um livro digite 'liv', seguido do código do livro.")
+        print(" - Para informações de um usuário digite 'usu', seguido do código do usuário.")
+        print(" - Para notificações de um professor digite 'ntf', seguido do código do professor.")
+        print(" - Para sair digite 'sai'.")
 
-        opcao = input("Qual ação deseja realizar? ")
+        opcao = input("Qual ação deseja realizar? ").split()
 
-        if opcao != 'sair':
-            acao = opcao[:3]
-            codigo_usuario = int(opcao[4])
-            codigo_livro = int(opcao[6])
-            
-            if acao == "emp":
-                # Lógica para empréstimo de livro
-                usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-                livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
-                professor = 0
-                if usuario and livro:
+        if opcao[0] != 'sai':
+            acao = opcao[0]
 
-                    #Verifica se o usuario está devendo algum livro
-                    devedor = next((u for u in usuario.emprestimos if u.verificar_atraso() == True), None)
+            if acao in ["emp", "res", "obs"]:
+                codigo_usuario = int(opcao[1])
+                codigo_livro = int(opcao[2])
 
-                    if devedor:
-                        print("O empréstimo não será possível até que o livro em atraso seja devolvido")
-
-                    elif isinstance(usuario, Professor):
-
-                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor=1)
-                        print(mensagem)
-
-                    elif usuario.qtd_emprestimos == 0:
-                        print("Usuário atingiu a quantidade máxima de empréstimos")
-                        
-                    else:
-                        mensagem = biblioteca.emprestar_livro(usuario, livro, professor)
-                        print(mensagem)
-                else:
-                    print("Usuário ou livro não encontrado.")
-                    
+                if acao == "emp":
+                    biblioteca.emprestar_livro(codigo_usuario, codigo_livro)
+                elif acao == "res":
+                    biblioteca.reservar_livro(codigo_usuario, codigo_livro)
+                elif acao == "obs":
+                    biblioteca.observar(codigo_usuario, codigo_livro)
 
             elif acao == "dev":
-                # Lógica para devolução de livro
-                codigo_emprestimo = int(input("Digite o código do empréstimo: "))
-                
-                emprestimo = next((e for e in biblioteca.emprestimos if e.id == codigo_emprestimo), None)
+                codigo_emprestimo = int(opcao[1])
+                codigo_usuario = int(opcao[2])
+                biblioteca.devolver_livro(codigo_emprestimo, codigo_usuario)
 
-                if emprestimo:
-                    usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-                    
-                    professor = 0
+            elif acao == "liv":
+                codigo_livro = int(opcao[1])
+                biblioteca.exibir_info_livro(codigo_livro)
 
-                    if isinstance(usuario, Professor):
+            elif acao == "usu":
+                codigo_usuario = int(opcao[1])
+                biblioteca.exibir_info_usuario(codigo_usuario)
 
-                        mensagem = biblioteca.devolver_livro(emprestimo, professor=1)
-                        print(mensagem)
-
-                    else:
-                        mensagem = biblioteca.devolver_livro(emprestimo, professor)
-                        print(mensagem)
-
-                else:
-                    print("Empréstimo não encontrado.")
-
-
-            elif acao == "res":
-                # Lógica para reserva de livro
-                usuario = next((u for u in biblioteca.usuarios if u.codigo == codigo_usuario), None)
-                livro = next((l for l in biblioteca.livros if l.codigo == codigo_livro), None)
-    
-                if usuario and livro:
-                    mensagem = biblioteca.reservar_livro(usuario, livro)
-                    print(mensagem)
-                else:
-                    print("Usuário ou livro não encontrado.")
+            elif acao == "ntf":
+                codigo_usuario = int(opcao[1])
+                biblioteca.exibir_notificacoes_professor(codigo_usuario)
 
         else:
             print("Saindo do sistema...")
             break
-
-        
 
 if __name__ == "__main__":
     main()
