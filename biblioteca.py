@@ -1,10 +1,9 @@
-from observador import Observador
 from reservarLivro import ReservarLivro
+
 class Biblioteca:
     def __init__(self):
         self.livros = []
         self.usuarios = []
-        self.observador = Observador()
         self.reserva = ReservarLivro()
 
 

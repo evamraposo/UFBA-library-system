@@ -11,7 +11,8 @@ class Professor(Usuario):
         self.qtd_notificacoes = len(self.notificacoes)
         
     def exibir_informacoes(self):
-        return f"Professor: {self.nome}, Código: {self.codigo}"
+        tipo_usuario = 'Professor:'
+        super().exibir_informacoes(tipo_usuario)
     
     def emprestimo(self, livro):
         emp = EmprestarLivro()

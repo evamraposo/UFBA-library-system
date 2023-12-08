@@ -9,7 +9,8 @@ class AlunoPosGraduacao(Usuario):
         self.data_devolucao = 4
 
     def exibir_informacoes(self):
-        return f"Aluno de Pós-Graduação: {self.nome}, Código: {self.codigo}"
+        tipo_usuario = 'Aluno de Pós-Graduação:'
+        super().exibir_informacoes(tipo_usuario)
     
     def emprestimo(self, livro):
         emp = EmprestimoAluno()

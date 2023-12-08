@@ -6,4 +6,5 @@ class Usuario:
         self.reservas = []
         self.qtd_reservas = 3
 
-
+    def exibir_informacoes(self,  tipo_usuario):
+        return f"{tipo_usuario}, {self.nome}, Código: {self.codigo}"
